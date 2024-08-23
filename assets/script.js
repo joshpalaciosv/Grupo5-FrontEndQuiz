@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const result = document.getElementById('result');
 
     // Fetch quiz data from server
-    fetch('http://67.207.95.104:3000/api/quiz')
+    fetch('https://67.207.95.104:3000/api/quiz')
         .then(response => response.json())
         .then(quizData => {
             // Render quiz questions
