@@ -3,8 +3,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
     const result = document.getElementById('result');
 
+
+    //Codigo para Seleccionar el TEMA, dependienco del tema, debera elegir la API ejemplo, selecciona HTML, entonces seleccionara
+    // api/html/quiz
+    const serverBackEnd = 'http://localhost:3000/';
+    let apiUrl = '';
+    apiUrl = serverBackEnd + 'api/html/quiz';
+    apiUrl = serverBackEnd + 'api/javascript/quiz';
+    apiUrl = serverBackEnd + 'api/css/quiz';
+    apiUrl = serverBackEnd + 'api/bootstrap/quiz';
+
+
+    apiUrl = serverBackEnd + 'api/quiz';
+
+    ///  api/javascript/quiz
+
     // Fetch quiz data from server
-    fetch('http://localhost:3000/api/quiz')
+    fetch(apiUrl)
         .then(response => response.json())
         .then(quizData => {
             // Render quiz questions
