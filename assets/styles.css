@@ -81,7 +81,7 @@ header {
   
 }
 
-.quiz-container{
+.seccion-preguntas{
     display: flex;
     flex-direction: row;
     margin-left: 200px;

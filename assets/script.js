@@ -37,8 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(quizData => {
 
-            pantallaPrincipal.style.display = 'none';
+            pantallaPrincipal.style.display = 'none'; //
             quizContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nuevas preguntas
+
+
             var item = quizData[contadorPreguntas-1];
             var index = contadorPreguntas;
             //quizData.forEach((item, index) => {
