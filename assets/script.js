@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const warningElement = document.getElementById('warning-container');
     const submitBtn = document.getElementById('btn');
     const result = document.getElementById('result');
+    const pantallaPrincipal = document.getElementById('section-principal');
     
     const serverBackEnd = 'http://localhost:3000/';
     let apiUrl = serverBackEnd + 'api/quiz';
@@ -16,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', () => {
                 const temaSeleccionado = button.getAttribute('data-theme');
                 apiUrl = serverBackEnd + `api/${temaSeleccionado}/quiz`;
-                cargarPreguntas(apiUrl);
+                let contadorPreguntas = 1;
+                cargarPreguntas(apiUrl, contadorPreguntas);
             });
         });
     }
@@ -30,26 +32,34 @@ document.addEventListener('DOMContentLoaded', () => {
                   .replace(/'/g, '&#39;');
     }
     
-    function cargarPreguntas(url) {
+    function cargarPreguntas(url, contadorPreguntas) {
         fetch(url)
         .then(response => response.json())
         .then(quizData => {
+
+            pantallaPrincipal.style.display = 'none';
             quizContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nuevas preguntas
-    
-            quizData.forEach((item, index) => {
+            var item = quizData[contadorPreguntas-1];
+            var index = contadorPreguntas;
+            //quizData.forEach((item, index) => {
                 const questionElement = document.createElement('div');
                 questionElement.classList.add('question');
+                //<p>${escapeHTML(item.question)}</p>
                 questionElement.innerHTML = `
-                    <p>${escapeHTML(item.question)}</p>
-                    ${item.options.map((option, i) => `
-                        <label>
-                            <input type="radio" id="radio${index}-${i}" name="question${index}" value="${escapeHTML(option)}">
-                            <span class="label-button" for="radio${index}-${i}">${escapeHTML(option)}</span>
-                        </label>
-                    `).join('')}
+                    <article>
+                        <h6>${escapeHTML(item.question)}</h6>
+                    </article>
+                    <article>
+                        ${item.options.map((option, i) => `
+                            <label>
+                                <input type="radio" id="radio${index}-${i}" name="question${index}" value="${escapeHTML(option)}">
+                                <span class="label-button" for="radio${index}-${i}">${escapeHTML(option)}</span>
+                            </label>
+                        `).join('')}
+                    </article>
                 `;
                 quizContainer.appendChild(questionElement);
-            });
+            //});
     
             submitBtn.style.display = 'block'; // Mostrar el botón de enviar
     
@@ -64,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 result.textContent = `Your score: ${score}/${quizData.length}`;
             });
+
         })
         .catch(error => {
             console.error('Error al cargar las preguntas:', error);
