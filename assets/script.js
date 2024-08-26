@@ -1,104 +1,59 @@
-    document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const quizContainer = document.getElementById('quiz-container');
     const warningElement = document.getElementById('warning-container');
-    //const quizWarning = document.getElementById('warning-container');
-    //const submitBtn = document.getElementById('submit-btn');
     const submitBtn = document.getElementById('btn');
     const result = document.getElementById('result');
-
-
-    //Codigo para Seleccionar el TEMA, dependienco del tema, debera elegir la API ejemplo, selecciona HTML, entonces seleccionara
-    // api/html/quiz
-    const serverBackEnd = 'http://localhost:3000/';
-    let apiUrl = '';
     
-    apiUrl = serverBackEnd + 'api/quiz';
+    const serverBackEnd = 'http://localhost:3000/';
+    let apiUrl = serverBackEnd + 'api/quiz';
 
+    // Llama a la función principal
     mainScreen();
 
-    //Funcion Pantalla Principal.
     function mainScreen() {
-
-        fetch(apiUrl)
-        .then(response => response.json())
-        .then(quizData => {
-            // Render quiz questions
-            quizData.forEach((item, index) => {
-                const questionElement = document.createElement('div');
-                questionElement.classList.add('question');
-                questionElement.innerHTML = `
-                    <p>${item.question}</p>
-                    ${item.options.map((option, i) => `
-                        <label>
-                            <input type="radio" name="tema${index}" value="${option}">
-                            ${option}
-                        </label>
-                    `).join('')}
-                `;
-                quizContainer.appendChild(questionElement);
-
-                
-
-            });
-
-
-            // Handle form submission
-            submitBtn.addEventListener('click', () => {
-
-                warningElement.innerHTML = ``;
-                let score = 0;
-                let temaSeleccionado = "";
-                quizData.forEach((item, index) => {
-                    temaSeleccionado = document.querySelector(`input[name="tema${index}"]:checked`);
-                    
-                });
-                console.log(temaSeleccionado);
-                if (temaSeleccionado == null) {
-                    //const warningElement = document.createElement('div');
-                    warningElement.innerHTML = `<p>Debe Seleccionar un tema</p>`;
-                    //quizWarning.appendChild(warningElement);
-                }
-                else {
-                    quizContainer.innerHTML = ``;
-                    carruselQuiz(temaSeleccionado);
-                }
-                
-
+        // Define el mecanismo para seleccionar un tema usando botones
+        document.querySelectorAll('.theme-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const temaSeleccionado = button.getAttribute('data-theme');
+                apiUrl = serverBackEnd + `api/${temaSeleccionado}/quiz`;
+                cargarPreguntas(apiUrl);
             });
         });
-
     }
 
-
-    //Funcion Carrousel para que muestre las preguntas del tema selecciona
-    function carruselQuiz(temaSeleccionado) {
-
-        apiUrl = serverBackEnd + 'api/html/quiz';
-        apiUrl = serverBackEnd + 'api/javascript/quiz';
-        apiUrl = serverBackEnd + 'api/css/quiz';
-        apiUrl = serverBackEnd + 'api/bootstrap/quiz';
-
-        // Fetch quiz data from server
-        fetch(apiUrl)
+  /*esta funcion es para que no de problemas al leer etiquetas y no las procese*/
+    function escapeHTML(str) {
+        return str.replace(/&/g, '&amp;')
+                  .replace(/</g, '&lt;')
+                  .replace(/>/g, '&gt;')
+                  .replace(/"/g, '&quot;')
+                  .replace(/'/g, '&#39;');
+    }
+    
+    function cargarPreguntas(url) {
+        fetch(url)
         .then(response => response.json())
         .then(quizData => {
-            // Render quiz questions
+            quizContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nuevas preguntas
+    
             quizData.forEach((item, index) => {
                 const questionElement = document.createElement('div');
                 questionElement.classList.add('question');
                 questionElement.innerHTML = `
-                    <p>${item.question}</p>
+                    <p>${escapeHTML(item.question)}</p>
                     ${item.options.map((option, i) => `
                         <label>
-                            <input type="radio" name="question${index}" value="${option}">
-                            ${option}
+                            <input type="radio" id="radio${index}-${i}" name="question${index}" value="${escapeHTML(option)}">
+                            <span class="label-button" for="radio${index}-${i}">${escapeHTML(option)}</span>
                         </label>
                     `).join('')}
                 `;
                 quizContainer.appendChild(questionElement);
             });
-
-            // Handle form submission
+    
+            submitBtn.style.display = 'block'; // Mostrar el botón de enviar
+    
+            // Manejar el envío del cuestionario
             submitBtn.addEventListener('click', () => {
                 let score = 0;
                 quizData.forEach((item, index) => {
@@ -109,11 +64,16 @@
                 });
                 result.textContent = `Your score: ${score}/${quizData.length}`;
             });
+        })
+        .catch(error => {
+            console.error('Error al cargar las preguntas:', error);
+            warningElement.innerHTML = '<p>Error al cargar las preguntas. Inténtalo de nuevo más tarde.</p>';
         });
-
     }
     
-    ///  api/javascript/quiz
 
-    
+    /*para que el boton de cambiar a ligth o a dark funcione y tenga interactividad*/
+    document.querySelector('.theme-btn-header').addEventListener('click', function() {
+        this.classList.toggle('active');
+    });
 });

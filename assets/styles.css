@@ -1,29 +1,66 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
+    margin-right: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    color:white;
+    background-color: #313e51;
+    font-weight: bold;
 }
 
 header {
-    background: #4CAF50;
     color: white;
-    padding: 1em;
     width: 100%;
-    text-align: center;
+    height: 160px;
+    margin-top: 24px;
+    margin-left: 960px;
+ 
 }
+
+/*para que el boton se mueva*/
+.theme-btn-header {
+    width: 90px;
+    height: 45px;
+    background-color: fuchsia;
+    border: none;
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+.theme-btn-header::before {
+    content: '';
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 47%;
+    left: 2px;
+    transform: translateY(-50%);
+    transition: left 0.3s;
+}
+
+.theme-btn-header.active::before {
+    left: 48px;
+}
+
+.theme-btn-header.active {
+    background-color: darkmagenta;
+}
+
+
+
+
 
 #quiz-container {
     margin: 20px;
-    max-width: 600px;
     width: 100%;
 }
 
-.question {
-    margin-bottom: 10px;
-}
 
 #submit-btn {
     background-color: #4CAF50;
@@ -35,4 +72,142 @@ header {
 
 #result {
     margin-top: 20px;
+}
+
+.pantalla-principal{
+    display: flex;
+    flex-direction: row;
+    margin-left: 200px;
+  
+}
+
+h3{
+    font-size: 60px;
+   
+}
+
+h6{
+    font-size: 18px;
+  
+}
+
+
+
+
+
+/* Estilo para el contenedor de preguntas */
+/* Contenedor para los botones de selección de tema */
+/* Estilo para el contenedor de los botones de tema */
+#theme-selector {
+    margin: 20px auto;
+    max-width: 300px; /* Ajusta el ancho máximo si es necesario */
+
+}
+
+/* Estilo para todos los botones */
+.theme-btn {
+    display: flex;
+    width: 220%; /* Ocupa todo el ancho del contenedor */
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #3b4d66;; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none;
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 25px;
+    cursor: pointer; /* Cambia el cursor a una mano al pasar sobre el botón */
+    transition: background-color 0.3s, transform 0.2s; /* Transiciones para efectos de hover */
+    text-align: center;
+    margin-left: 20px;
+    font-weight: bold;
+    
+}
+.icon-header{
+    width: 54px; /* Ajusta el tamaño del icono */
+    height: 54px; /* Ajusta el tamaño del icono */
+    margin-right: 10px; /* Espacio entre el ícono y el texto */
+    
+    border-radius: 10%; /* Bordes redondeados */ 
+}
+/* Estilo para los íconos dentro de los botones */
+ .icon {
+    width: 54px; /* Ajusta el tamaño del icono */
+    height: 54px; /* Ajusta el tamaño del icono */
+    margin-right: 10px; /* Espacio entre el ícono y el texto */
+    background-color: white;
+    border-radius: 10%; /* Bordes redondeados */
+}
+
+/* Estilo cuando el botón está seleccionado o el ratón está sobre él */
+.theme-btn:hover {
+    background-color: #3b4d66; /* Color de fondo al pasar el ratón */
+    transform: scale(1.05); /* Escala el botón ligeramente */
+  
+}
+
+.theme-btn:active {
+    background-color: #004085; /* Color de fondo cuando el botón está presionado */
+    transform: scale(1); /* Elimina la escala cuando se presiona */
+}
+
+
+/* Estilo opcional para el contenedor del cuestionario */
+#quiz-container {
+    margin-top: 20px;
+}
+
+/* Estilo opcional para el botón de enviar */
+#btn {
+    display: none; /* Inicialmente oculto */
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #28a745; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none;
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 16px;
+    cursor: pointer; /* Cambia el cursor a una mano al pasar sobre el botón */
+    transition: background-color 0.3s; /* Transición para el efecto de hover */
+}
+
+#btn:hover {
+    background-color: #218838; /* Color de fondo al pasar el ratón */
+}
+
+
+/* Estilo para los botones de respuestas */
+.label-button {
+    display: block;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #007bff; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none;
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 16px;
+    cursor: pointer; /* Cambia el cursor a una mano al pasar sobre el botón */
+    transition: background-color 0.3s, transform 0.2s; /* Transiciones para efectos de hover */
+    text-align: center;
+    line-height: 1.5; /* Alinea verticalmente el texto */
+}
+
+/* Estilo cuando el radio button está seleccionado */
+input[type="radio"]:checked + .label-button {
+    background-color: #0056b3; /* Color de fondo cuando está seleccionado */
+    transform: scale(1.05); /* Escala el botón ligeramente */
+}
+
+.label-button:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el ratón */
+    transform: scale(1.05); /* Escala el botón ligeramente */
+}
+
+.label-button:active {
+    background-color: #004085; /* Color de fondo cuando el botón está presionado */
+    transform: scale(1); /* Elimina la escala cuando se presiona */
+}
+
+/* Asegúrate de que el radio button no sea visible */
+input[type="radio"] {
+    display: none;
 }

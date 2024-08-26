@@ -8,17 +8,49 @@
 </head>
 <body>
     <header>
-        <h1>Quiz Application</h1>
+        <img src="imagenes/icon-sun-light.svg" alt="HTML Icon" class="icon-header">
+        <button class="theme-btn-header" ></button>
+        <img src="imagenes/icon-moon-light.svg" alt="HTML Icon" class="icon-header">
     </header>
     <main>
+        <section class="pantalla-principal">
+            <article>
+                <h3>Welcome to the <br>Frontend Quiz!</h3>
+                <h6> Pick a subject to get started.</h6> 
+            </article>
+        
+            <article>
+                <div id="theme-selector">
+                    <button class="theme-btn" data-theme="html">
+                        <img src="imagenes/icon-html.svg" alt="HTML Icon" class="icon">
+                        HTML
+                    </button>
+
+                    <button class="theme-btn" data-theme="css">
+                        <img src="imagenes/icon-css.svg" alt="CSS Icon" class="icon">
+                        CSS
+                    </button>
+                    <button class="theme-btn" data-theme="javascript">
+                        <img src="imagenes/icon-js.svg" alt="JavaScript Icon" class="icon">
+                        JavaScript
+                    </button>
+                  
+                    <button class="theme-btn" data-theme="bootstrap">
+                        <img src="imagenes/icon-accessibility.svg" alt="Bootstrap Icon" class="icon">
+                        Bootstrap
+                    </button>
+                </div>
+            </article>
+        </section>
+        
+
         <div id="quiz-container">
             <!-- Quiz questions will be dynamically injected here -->
         </div>
         <div id="warning-container">
             <!-- Div para enviar advertencias y validaciones -->
         </div>
-        <!-- <button id="submit-btn">Submit</button>-->
-        <!-- <button id="btn">Comenzar</button>-->
+        <button id="btn">Submit</button>
         <div id="result"></div>
     </main>
     <script src="./assets/script.js"></script>
