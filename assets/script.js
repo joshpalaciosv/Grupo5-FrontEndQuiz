@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.style.display = 'block'; // Mostrar el botón de enviar
             submitBtn.textContent = "Contestar Pregunta"
     
+            //submitBtn.removeEventListener
             // Manejar el envío del cuestionario
             submitBtn.addEventListener('click', () => {
 
