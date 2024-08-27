@@ -211,3 +211,41 @@ input[type="radio"]:checked + .label-button {
 input[type="radio"] {
     display: none;
 }
+
+:root {
+    --color-bg-dark: #313e51;
+    --color-text-dark: white;
+    --color-bg-light: #f4f4f4;
+    --color-text-light: black;
+    --btn-bg-dark: fuchsia;
+    --btn-bg-light: yellow;
+}
+
+/* Por defecto, el tema oscuro estará activo */
+body {
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-dark);
+}
+
+/* Estilos específicos para el tema claro */
+body.light-mode {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-light);
+}
+
+.theme-btn-header {
+    background-color: var(--btn-bg-dark);
+}
+
+/* Botón en modo claro */
+body.light-mode .theme-btn-header {
+    background-color: var(--btn-bg-light);
+}
+
+.icon-header {
+    filter: invert(0); /* Para mantener el color original */
+}
+
+body.light-mode .icon-header {
+    filter: invert(1); /* Para invertir colores en tema claro */
+}
