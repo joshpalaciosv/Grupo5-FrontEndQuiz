@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             confirmButtonText: 'Ok'
                           });
                     }
+<<<<<<< HEAD
                     else {
                         if (selectedOption && selectedOption.value === item.answer) {
                             Respuesta = true;
@@ -103,6 +104,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.log(submitBtn.textContent);
                     }
 
+=======
+                    //});
+                    //result.textContent = `Your score: ${score}/${quizData.length}`;
+                    //utilizando un operador condicional (ternario) se evalua score. 
+                    result.textContent = (Respuesta?"Respuesta Correcta":"Respuesta Fallida");
+                    console.log(result.textContent);
+
+                    //Apartado para desabilitar todas las opcione despues de haber seleccionado una anteriormente 
+                    const options = document.querySelectorAll(`input[name="question${index}"]`);
+                    options.forEach(option => option.disabled = true);
+
+                    submitBtn.textContent = "Siguiente Pregunta"
+                    contestarPregunta = false;
+                    console.log(submitBtn.textContent);
+>>>>>>> db8f70c (Se agrego apartado donde desabilita todas las opciones despues de la seleccion)
                 }
                 else
                 {
