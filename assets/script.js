@@ -37,9 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(quizData => {
 
-            pantallaPrincipal.style.display = 'none'; //
+            console.log(contadorPreguntas);
+            pantallaPrincipal.style.display = 'none'; //ocultar la pantalla principal
             quizContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nuevas preguntas
-
+            result.textContent = '';
+            let contestarPregunta = true;
 
             var item = quizData[contadorPreguntas-1];
             var index = contadorPreguntas;
@@ -64,17 +66,32 @@ document.addEventListener('DOMContentLoaded', () => {
             //});
     
             submitBtn.style.display = 'block'; // Mostrar el botón de enviar
+            submitBtn.textContent = "Contestar Pregunta"
     
             // Manejar el envío del cuestionario
             submitBtn.addEventListener('click', () => {
-                let score = 0;
-                quizData.forEach((item, index) => {
+
+                if (contestarPregunta) {
+                    let Respuesta = false;
+                    //quizData.forEach((item, index) => {
                     const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
                     if (selectedOption && selectedOption.value === item.answer) {
-                        score++;
+                        Respuesta = true;
                     }
-                });
-                result.textContent = `Your score: ${score}/${quizData.length}`;
+                    //});
+                    //result.textContent = `Your score: ${score}/${quizData.length}`;
+                    //utilizando un operador condicional (ternario) se evalua score. 
+                    result.textContent = (Respuesta?"Respuesta Correcta":"Respuesta Fallida");
+                    console.log(result.textContent);
+                    submitBtn.textContent = "Siguiente Pregunta"
+                    contestarPregunta = false;
+                    console.log(submitBtn.textContent);
+                }
+                else
+                {
+                    cargarPreguntas(url, contadorPreguntas+1)
+                }
+                
             });
 
         })
