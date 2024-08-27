@@ -37,8 +37,6 @@
                 `;
                 quizContainer.appendChild(questionElement);
 
-                
-
             });
 
 
