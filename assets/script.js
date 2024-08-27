@@ -84,6 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     //utilizando un operador condicional (ternario) se evalua score. 
                     result.textContent = (Respuesta?"Respuesta Correcta":"Respuesta Fallida");
                     console.log(result.textContent);
+
+                    //Apartado para desabilitar todas las opcione despues de haber seleccionado una anteriormente 
+                    const options = document.querySelectorAll(`input[name="question${index}"]`);
+                    options.forEach(option => option.disabled = true);
+
                     submitBtn.textContent = "Siguiente Pregunta"
                     contestarPregunta = false;
                     console.log(submitBtn.textContent);
