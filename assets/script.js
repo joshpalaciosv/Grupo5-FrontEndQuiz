@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         //utilizando un operador condicional (ternario) se evalua score. 
                         result.textContent = (Respuesta?"Respuesta Correcta":"Respuesta Fallida");
                         console.log(result.textContent);
-                        submitBtn.textContent = "Siguiente Pregunta"
+                        submitBtn.textContent = "Siguiente Pregunta";
                         contestarPregunta = false;
                         console.log(submitBtn.textContent);
                     }
