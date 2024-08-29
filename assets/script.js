@@ -101,6 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         submitBtn.textContent = "Siguiente Pregunta";
                         contestarPregunta = false;
                         console.log(submitBtn.textContent);
+
+                        // Apartado para deshabilitar todas las opciones después de haber seleccionado una anteriormente
+                        const options = document.querySelectorAll(`input[name="question${index}"]`);
+                        options.forEach(option => option.disabled = true);
                     }
 
                 }
