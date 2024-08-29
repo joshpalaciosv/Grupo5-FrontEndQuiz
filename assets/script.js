@@ -1,9 +1,12 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const quizContainer = document.getElementById('quiz-container');
     const warningElement = document.getElementById('warning-container');
     const submitBtn = document.getElementById('btn');
     const result = document.getElementById('result');
     const pantallaPrincipal = document.getElementById('section-principal');
+    let contadorPreguntas = 1;
+    let contestarPregunta = true;
     
     const serverBackEnd = 'http://localhost:3000/';
     let apiUrl = serverBackEnd + 'api/quiz';
@@ -17,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', () => {
                 const temaSeleccionado = button.getAttribute('data-theme');
                 apiUrl = serverBackEnd + `api/${temaSeleccionado}/quiz`;
-                let contadorPreguntas = 1;
-                cargarPreguntas(apiUrl, contadorPreguntas);
+                //let contadorPreguntas = 1;
+                cargarPreguntas(apiUrl);
             });
         });
     }
@@ -31,8 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
                   .replace(/"/g, '&quot;')
                   .replace(/'/g, '&#39;');
     }
+    let buttonQuiz = null;
     
-    function cargarPreguntas(url, contadorPreguntas) {
+    function cargarPreguntas(url) {
         fetch(url)
         .then(response => response.json())
         .then(quizData => {
@@ -41,7 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
             pantallaPrincipal.style.display = 'none'; //ocultar la pantalla principal
             quizContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nuevas preguntas
             result.textContent = '';
-            let contestarPregunta = true;
+            contestarPregunta = true;
+            //submitBtn.removeEventListener('click', ());
+            submitBtn.removeEventListener('click', buttonQuiz);
 
             var item = quizData[contadorPreguntas-1];
             var index = contadorPreguntas;
@@ -68,32 +74,45 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.style.display = 'block'; // Mostrar el botón de enviar
             submitBtn.textContent = "Contestar Pregunta"
     
-            //submitBtn.removeEventListener
-            // Manejar el envío del cuestionario
-            submitBtn.addEventListener('click', () => {
 
+            buttonQuiz = () => {
                 if (contestarPregunta) {
                     let Respuesta = false;
                     //quizData.forEach((item, index) => {
                     const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
-                    if (selectedOption && selectedOption.value === item.answer) {
-                        Respuesta = true;
+                    //console.log(selectedOption);
+                    if (selectedOption == null) {
+                        Swal.fire({
+                            title: 'Debes seleccionar una respuesta.',
+                            text: 'continuemos',
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                          });
                     }
-                    //});
-                    //result.textContent = `Your score: ${score}/${quizData.length}`;
-                    //utilizando un operador condicional (ternario) se evalua score. 
-                    result.textContent = (Respuesta?"Respuesta Correcta":"Respuesta Fallida");
-                    console.log(result.textContent);
-                    submitBtn.textContent = "Siguiente Pregunta"
-                    contestarPregunta = false;
-                    console.log(submitBtn.textContent);
+                    else {
+                        if (selectedOption && selectedOption.value === item.answer) {
+                            Respuesta = true;
+                        }
+                        //});
+                        //result.textContent = `Your score: ${score}/${quizData.length}`;
+                        //utilizando un operador condicional (ternario) se evalua score. 
+                        result.textContent = (Respuesta?"Respuesta Correcta":"Respuesta Fallida");
+                        console.log(result.textContent);
+                        submitBtn.textContent = "Siguiente Pregunta"
+                        contestarPregunta = false;
+                        console.log(submitBtn.textContent);
+                    }
+
                 }
                 else
                 {
-                    cargarPreguntas(url, contadorPreguntas+1)
+                    cargarPreguntas(url, contadorPreguntas++)
                 }
-                
-            });
+            };
+            //submitBtn.removeEventListener
+            // Manejar el envío del cuestionario
+            submitBtn.addEventListener('click', buttonQuiz);
+
 
         })
         .catch(error => {
@@ -102,6 +121,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
+
+    function AnswerAndNext(index) {
+        if (contestarPregunta) {
+            let Respuesta = false;
+            //quizData.forEach((item, index) => {
+            const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+            if (selectedOption && selectedOption.value === item.answer) {
+                Respuesta = true;
+            }
+            //});
+            //result.textContent = `Your score: ${score}/${quizData.length}`;
+            //utilizando un operador condicional (ternario) se evalua score. 
+            result.textContent = (Respuesta?"Respuesta Correcta":"Respuesta Fallida");
+            console.log(result.textContent);
+            submitBtn.textContent = "Siguiente Pregunta"
+            contestarPregunta = false;
+            console.log(submitBtn.textContent);
+        }
+        else
+        {
+            cargarPreguntas(url, contadorPreguntas++)
+        }
+    }
 
     /*para que el boton de cambiar a ligth o a dark funcione y tenga interactividad*/
     document.querySelector('.theme-btn-header').addEventListener('click', function() {
