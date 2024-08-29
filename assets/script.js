@@ -122,29 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
 
-    function AnswerAndNext(index) {
-        if (contestarPregunta) {
-            let Respuesta = false;
-            //quizData.forEach((item, index) => {
-            const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
-            if (selectedOption && selectedOption.value === item.answer) {
-                Respuesta = true;
-            }
-            //});
-            //result.textContent = `Your score: ${score}/${quizData.length}`;
-            //utilizando un operador condicional (ternario) se evalua score. 
-            result.textContent = (Respuesta?"Respuesta Correcta":"Respuesta Fallida");
-            console.log(result.textContent);
-            submitBtn.textContent = "Siguiente Pregunta"
-            contestarPregunta = false;
-            console.log(submitBtn.textContent);
-        }
-        else
-        {
-            cargarPreguntas(url, contadorPreguntas++)
-        }
-    }
-
     /*para que el boton de cambiar a ligth o a dark funcione y tenga interactividad*/
     document.querySelector('.theme-btn-header').addEventListener('click', function() {
         this.classList.toggle('active');
