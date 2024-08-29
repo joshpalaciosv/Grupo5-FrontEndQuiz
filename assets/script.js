@@ -122,8 +122,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
 
+    const body = document.body;
+    // Verificar el tema guardado en localStorage
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    if (currentTheme === 'light') {
+        body.classList.add('light-mode');
+        document.querySelector('.theme-btn-header').classList.add('active');
+    }
+
     /*para que el boton de cambiar a ligth o a dark funcione y tenga interactividad*/
     document.querySelector('.theme-btn-header').addEventListener('click', function() {
         this.classList.toggle('active');
+        body.classList.toggle('light-mode');
+        
+        // Guardar el tema en localStorage
+        const theme = body.classList.contains('light-mode') ? 'light' : 'dark';
+        localStorage.setItem('theme', theme);
+
     });
+
+    
 });
+
