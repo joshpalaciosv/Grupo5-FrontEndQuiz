@@ -55,12 +55,10 @@ header {
 
 
 
-
 #quiz-container {
     margin: 20px;
     width: 100%;
 }
-
 
 #submit-btn {
     background-color: #4CAF50;
@@ -97,7 +95,6 @@ h6{
     font-size: 18px;
   
 }
-
 
 
 
@@ -157,7 +154,6 @@ h6{
     transform: scale(1); /* Elimina la escala cuando se presiona */
 }
 
-
 /* Estilo opcional para el contenedor del cuestionario */
 #quiz-container {
     margin-top: 20px;
@@ -180,7 +176,6 @@ h6{
 #btn:hover {
     background-color: #218838; /* Color de fondo al pasar el ratón */
 }
-
 
 /* Estilo para los botones de respuestas */
 .label-button {
@@ -218,3 +213,4 @@ input[type="radio"]:checked + .label-button {
 input[type="radio"] {
     display: none;
 }
+
