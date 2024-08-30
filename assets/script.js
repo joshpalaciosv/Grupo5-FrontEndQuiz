@@ -1,10 +1,10 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const quizContainer = document.getElementById('quiz-container');
     const warningElement = document.getElementById('warning-container');
     const submitBtn = document.getElementById('btn');
     const result = document.getElementById('result');
     const pantallaPrincipal = document.getElementById('section-principal');
+    
     let contadorPreguntas = 1;
     let contestarPregunta = true;
     
@@ -54,26 +54,46 @@ document.addEventListener('DOMContentLoaded', () => {
             //quizData.forEach((item, index) => {
                 const questionElement = document.createElement('div');
                 questionElement.classList.add('question');
+                
                 //<p>${escapeHTML(item.question)}</p>
                 questionElement.innerHTML = `
-                    <article>
-                        <h6>${escapeHTML(item.question)}</h6>
-                    </article>
-                    <article>
-                        ${item.options.map((option, i) => `
-                            <label>
-                                <input type="radio" id="radio${index}-${i}" name="question${index}" value="${escapeHTML(option)}">
-                                <span class="label-button" for="radio${index}-${i}">${escapeHTML(option)}</span>
-                            </label>
-                        `).join('')}
-                    </article>
+                <div id="question-container" class= "row"> 
+                        <article class="col-md-6">
+                            <p >Pregunta ${contadorPreguntas}  de 10</p>
+                            <h6>${escapeHTML(item.question)}</h6>
+                            <div class="progress-bar" col-md-6>
+                                <div class="progress"></div>
+                            </div>
+                        </article>
+                        <article id="quiz-container question-list" class=" col-md-5">
+                            ${item.options.map((option, i) => `
+                                <label class="question-label col-md-12">
+                                    <input type="radio" id="radio${index}-${i}" name="question${index}" value="${escapeHTML(option)}">
+                                    <span  class= "label-button"  for="radio${index}-${i}">${escapeHTML(option)}</span>
+                                </label>
+                                <ul></ul>
+                            `).join('')}
+                        </article>
+
+                </div>
                 `;
                 quizContainer.appendChild(questionElement);
             //});
-    
-            submitBtn.style.display = 'block'; // Mostrar el botón de enviar
+            
+            function updateProgressBar(currentQuestion) {
+                const progressBar = document.querySelector('.progress');
+                const progressPercentage = (currentQuestion / 10) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+            }
+            
+            // Llama a esta función cada vez que cambies de pregunta
+            updateProgressBar(contadorPreguntas);
+
+            submitBtn.style.display = 'block'; // Mostrar el botón como bloque
+            submitBtn.style.margin = '-6.5% 52%'; // Eliminar margen para alineación correcta
+            submitBtn.style.width = '42%'; // Eliminar margen para alineación correcta
             submitBtn.textContent = "Contestar Pregunta"
-    
+            questionElement.appendChild(submitBtn);    
 
             buttonQuiz = () => {
                 if (contestarPregunta) {
