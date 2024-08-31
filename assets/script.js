@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.log(result.textContent);
                         //submitBtn.textContent = "Siguiente Pregunta";
 
-                        submitBtn.textContent = (totalPreguntas==contadorPreguntas?finalizarQuiz(respuestasCorrectas):"Siguiente Pregunta");
+                        submitBtn.textContent = (totalPreguntas==contadorPreguntas?"Finalizar Quiz":"Siguiente Pregunta");
                         contestarPregunta = false;
                         console.log(submitBtn.textContent);
 
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 else
                 {
-                    (totalPreguntas==contadorPreguntas?"Finalizar Quiz":cargarPreguntas(url, contadorPreguntas++));
+                    (totalPreguntas==contadorPreguntas?finalizarQuiz(respuestasCorrectas):cargarPreguntas(url, contadorPreguntas++));
                     
                 }
             };
