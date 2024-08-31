@@ -118,8 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             respuestasCorrectas++;
                         }
 
+                        mostrarRespuestaCorrecta(item.answer)
                         
-
                         //});
                         //result.textContent = `Your score: ${score}/${quizData.length}`;
                         //utilizando un operador condicional (ternario) se evalua score. 
@@ -179,7 +179,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } 
     
-    
+    function mostrarRespuestaCorrecta(respuestaCorrecta) {
+        const allPosibleAnswer = document.querySelectorAll(`input[name^="question"]`);
+        allPosibleAnswer.forEach((posibleAnswer) => {
+            if (posibleAnswer.value === respuestaCorrecta) {
+                console.log(posibleAnswer);
+                posibleAnswer.classList.add('correctAnswer');
+            }
+            else
+            {
+                //posibleAnswer.add.classList('');
+                posibleAnswer.classList.add('incorrectAnswer');
+            }
+        }
+        );
+        console.log(allPosibleAnswer);
+    }
 
     const body = document.body;
     // Verificar el tema guardado en localStorage

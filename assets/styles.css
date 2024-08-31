@@ -312,3 +312,11 @@ body.light-mode .theme-btn-header {
 body.light-mode .icon-header {
     filter: invert(1); /* Para invertir colores en tema claro */
 }
+
+.correctAnswer + .label-button {
+    background-color: #29f5dd;
+}
+
+.incorrectAnswer + .label-button {
+    background-color: #405350;
+}
