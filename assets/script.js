@@ -5,14 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const result = document.getElementById('result');
     const pantallaPrincipal = document.getElementById('section-principal');
     
-    let contadorPreguntas = 1;
-    let contestarPregunta = true;
-    let respuestasCorrectas = 0;
-    let totalPreguntas = 0;
+    //banderas que se utilizan en el codigo
+    let contadorPreguntas = 1; //para contar las preguntas e incrementar al avanzar en el quiz
+    let contestarPregunta = true; //bandera utilizada para conocer si la pregunta ya fue respondida
+    let respuestasCorrectas = 0; //contador de preguntas correctas
+    let totalPreguntas = 0; //contador de preguntas totales en el quiz por si llegasen a cambiar en el backend
     
     
-    const serverBackEnd = 'http://localhost:3000/';
-    let apiUrl = serverBackEnd + 'api/quiz';
+    const serverBackEnd = 'http://localhost:3000/'; //se utiliza otro proyecto para leer las preguntas.
+    let apiUrl = ""; 
 
     // Llama a la función principal
     mainScreen();
@@ -23,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', () => {
                 const temaSeleccionado = button.getAttribute('data-theme');
                 apiUrl = serverBackEnd + `api/${temaSeleccionado}/quiz`;
-                //let contadorPreguntas = 1;
-                cargarPreguntas(apiUrl);
+
+                cargarPreguntas(apiUrl); //funcion para cargar las preguntas del tema seleccionado
             });
         });
     }
@@ -39,6 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     let buttonQuiz = null;
     
+
+    //Funcion que muestra las preguntas en el contenedor quiz-container y que permite que se muestren las preguntas una a una.
     function cargarPreguntas(url) {
         fetch(url)
         .then(response => response.json())
@@ -49,16 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
             quizContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nuevas preguntas
             result.textContent = '';
             contestarPregunta = true;
-            //submitBtn.removeEventListener('click', ());
+
+            //en cada llamada de cargarPreguntas tambien definimos un EventListener dinamico el cual debemos reiniciar.
+            //en este caso, utilizamos el remoteEventListener para remover el EventListener el click del boton que se utiliza en cada pregunta.
             submitBtn.removeEventListener('click', buttonQuiz);
 
-            var item = quizData[contadorPreguntas-1];
+            var item = quizData[contadorPreguntas-1]; //cargarmos la data de la pregunta.
             var index = contadorPreguntas;
-            //quizData.forEach((item, index) => {
+
                 const questionElement = document.createElement('div');
                 questionElement.classList.add('question');
                 
-                //<p>${escapeHTML(item.question)}</p>
+                //cargamos las opciones correspondientes a la pregunta.
                 questionElement.innerHTML = `
                 <div id="question-container" class= "row"> 
                         <article class="col-md-6">
@@ -81,8 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 `;
                 quizContainer.appendChild(questionElement);
-            //});
-            
+
+            //Funcion de Progress Bar.
             function updateProgressBar(currentQuestion) {
                 const progressBar = document.querySelector('.progress');
                 const progressPercentage = (currentQuestion / totalPreguntas) * 100;
@@ -98,12 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = "Contestar Pregunta"
             questionElement.appendChild(submitBtn);    
 
+            //esta variable contiene el EventListener que se carga en cada iteraccion de la pregunta.
             buttonQuiz = () => {
                 if (contestarPregunta) {
-                    let Respuesta = false;
-                    //quizData.forEach((item, index) => {
+                    let Respuesta = false; //inicializamos que la respuesta a la pregunta es falsa
+                    // guardamos la seleccion del usuario.
                     const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
-                    //console.log(selectedOption);
+                    
+                    //validamos que el usuario seleccione una opcion.
                     if (selectedOption == null) {
                         Swal.fire({
                             title: 'Debes seleccionar una respuesta.',
@@ -113,38 +120,40 @@ document.addEventListener('DOMContentLoaded', () => {
                           });
                     }
                     else {
+                        //si la opcion seleccionada es igual a la respuesta entonces cambiamos la bandera Respuesta=true
                         if (selectedOption && selectedOption.value === item.answer) {
                             Respuesta = true;
-                            respuestasCorrectas++;
+                            respuestasCorrectas++; //incrementamos el contador de respuestas correctas
                         }
 
-                        mostrarRespuestaCorrecta(item.answer)
+                        //Funcion para mostrarle al usuario la respuesta correcta.
+                        mostrarRespuestaCorrecta(item.answer) 
                         
-                        //});
-                        //result.textContent = `Your score: ${score}/${quizData.length}`;
+                        
                         //utilizando un operador condicional (ternario) se evalua score. 
                         result.textContent = (Respuesta?"Respuesta Correcta":"Respuesta Fallida");
                         console.log(result.textContent);
-                        //submitBtn.textContent = "Siguiente Pregunta";
 
                         submitBtn.textContent = (totalPreguntas==contadorPreguntas?"Finalizar Quiz":"Siguiente Pregunta");
-                        contestarPregunta = false;
+                        contestarPregunta = false; //cambiamos la bandera de contestarPregunta a False, para indicar que lo que se necesita es pasar a la siguiente pregunta
                         console.log(submitBtn.textContent);
 
                         // Apartado para deshabilitar todas las opciones después de haber seleccionado una anteriormente
-                        const options = document.querySelectorAll(`input[name="question${index}"]`);
+                        const options = document.querySelectorAll(`input[name^="question"]`);
                         options.forEach(option => option.disabled = true);
                     }
 
                 }
                 else
                 {
+                    //cuando el usuario ya respondio la pregunta la siguiente opcion es avanzar a la siguiente pregunta.
+                    //si el totalPreguntas es igual al contadorPreguntas ya se llego al final y se mostrara la pantalla de finalizacion del Quiz.
                     (totalPreguntas==contadorPreguntas?finalizarQuiz(respuestasCorrectas):cargarPreguntas(url, contadorPreguntas++));
                     
                 }
             };
-            //submitBtn.removeEventListener
-            // Manejar el envío del cuestionario
+            
+            // se agrega al Event Click del boton la variable buttonQuiz.
             submitBtn.addEventListener('click', buttonQuiz);
 
 
@@ -155,7 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
+    //Funcion que muestra la pantalla final del Quiz, indicando el numero de preguntas acertadas.
+    //asi tambien muestra la opcion para comenzar de nuevo.
     function finalizarQuiz(respuestasCorrectas) {
         quizContainer.innerHTML = '';
         result.textContent = '';
@@ -179,21 +189,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } 
     
+    //Funcion para marcar la respuesta correcta en un color diferente.
     function mostrarRespuestaCorrecta(respuestaCorrecta) {
         const allPosibleAnswer = document.querySelectorAll(`input[name^="question"]`);
         allPosibleAnswer.forEach((posibleAnswer) => {
             if (posibleAnswer.value === respuestaCorrecta) {
-                console.log(posibleAnswer);
-                posibleAnswer.classList.add('correctAnswer');
+                posibleAnswer.classList.add('correctAnswer');  //agregamos la clase a la respuesta correcta
             }
             else
             {
-                //posibleAnswer.add.classList('');
-                posibleAnswer.classList.add('incorrectAnswer');
+                posibleAnswer.classList.add('incorrectAnswer'); //agregamos la clase a la respuesta incorrecta
             }
         }
         );
-        console.log(allPosibleAnswer);
     }
 
     const body = document.body;
