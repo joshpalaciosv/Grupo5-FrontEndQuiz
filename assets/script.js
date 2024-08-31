@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let contadorPreguntas = 1;
     let contestarPregunta = true;
+    let respuestasCorrectas = 0;
+    let totalPreguntas = 0;
+    
     
     const serverBackEnd = 'http://localhost:3000/';
     let apiUrl = serverBackEnd + 'api/quiz';
@@ -40,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(url)
         .then(response => response.json())
         .then(quizData => {
-
+            totalPreguntas = quizData.length;
             console.log(contadorPreguntas);
             pantallaPrincipal.style.display = 'none'; //ocultar la pantalla principal
             quizContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nuevas preguntas
@@ -59,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 questionElement.innerHTML = `
                 <div id="question-container" class= "row"> 
                         <article class="col-md-6">
-                            <p >Pregunta ${contadorPreguntas}  de 10</p>
+                            <p >Pregunta ${contadorPreguntas}  de ${totalPreguntas}</p>
                             <h6>${escapeHTML(item.question)}</h6>
                             <div class="progress-bar" col-md-6>
                                 <div class="progress"></div>
@@ -82,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             function updateProgressBar(currentQuestion) {
                 const progressBar = document.querySelector('.progress');
-                const progressPercentage = (currentQuestion / 10) * 100;
+                const progressPercentage = (currentQuestion / totalPreguntas) * 100;
                 progressBar.style.width = `${progressPercentage}%`;
             }
             
@@ -112,13 +115,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     else {
                         if (selectedOption && selectedOption.value === item.answer) {
                             Respuesta = true;
+                            respuestasCorrectas++;
                         }
+
+                        
+
                         //});
                         //result.textContent = `Your score: ${score}/${quizData.length}`;
                         //utilizando un operador condicional (ternario) se evalua score. 
                         result.textContent = (Respuesta?"Respuesta Correcta":"Respuesta Fallida");
                         console.log(result.textContent);
-                        submitBtn.textContent = "Siguiente Pregunta";
+                        //submitBtn.textContent = "Siguiente Pregunta";
+
+                        submitBtn.textContent = (totalPreguntas==contadorPreguntas?finalizarQuiz(respuestasCorrectas):"Siguiente Pregunta");
                         contestarPregunta = false;
                         console.log(submitBtn.textContent);
 
@@ -130,7 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 else
                 {
-                    cargarPreguntas(url, contadorPreguntas++)
+                    (totalPreguntas==contadorPreguntas?"Finalizar Quiz":cargarPreguntas(url, contadorPreguntas++));
+                    
                 }
             };
             //submitBtn.removeEventListener
@@ -144,6 +154,31 @@ document.addEventListener('DOMContentLoaded', () => {
             warningElement.innerHTML = '<p>Error al cargar las preguntas. Inténtalo de nuevo más tarde.</p>';
         });
     }
+
+
+    function finalizarQuiz(respuestasCorrectas) {
+        quizContainer.innerHTML = '';
+        result.textContent = '';
+        const pantallaFinal = document.createElement('div');
+        pantallaFinal.classList.add('question');
+
+        pantallaFinal.innerHTML = `
+        <div id="question-container" class= "row"> 
+                <article class="col-md-6">
+                    <p></p>
+                    <h6>De ${totalPreguntas} Preguntas has Respondido correctamente ${respuestasCorrectas}</h6>
+                    
+                </article>
+                <article id="quiz-container question-list" class=" col-md-5">
+                </article>
+        </div>
+        <button onClick="window.location.reload();">Iniciar Nuevamente</button>
+        `;
+
+        quizContainer.appendChild(pantallaFinal);
+
+    } 
+    
     
 
     const body = document.body;
