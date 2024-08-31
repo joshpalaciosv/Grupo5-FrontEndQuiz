@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <article id="quiz-container question-list" class=" col-md-5">
                 </article>
         </div>
-        <button onClick="window.location.reload();">Iniciar Nuevamente</button>
+        <button class="startAgain" onClick="window.location.reload();">Iniciar Nuevamente</button>
         `;
 
         quizContainer.appendChild(pantallaFinal);
